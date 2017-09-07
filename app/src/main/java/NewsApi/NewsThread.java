@@ -1,13 +1,16 @@
 package NewsApi;
 
+import android.app.Notification;
 import android.webkit.ClientCertRequest;
 
-import Interface.*;
+import Console.Console;
 
 import java.net.*;
 import java.io.*;
 
 import android.util.Log;
+import android.os.Handler;
+import android.os.Message;
 
 /**
  * Created by cai on 2017/9/7.
@@ -28,7 +31,7 @@ public class NewsThread implements Runnable {
     public static final int health = 11;
     public static final int entertainment = 12;
 
-    private CallBack console;
+    private Console console;
     private NewsSearchType nst;
     private String keyword;
     private int pageNum;
@@ -36,8 +39,11 @@ public class NewsThread implements Runnable {
     private int category;
     private String ID;
 
+    private Handler handler;
+
     //最近新闻
-    public NewsThread(CallBack console, NewsSearchType nst, int pageNum, int pageSize, int category) {
+    public NewsThread(Console console, NewsSearchType nst, int pageNum, int pageSize, int category) {
+        this.handler = console.handler;
         this.console = console;
         this.nst = nst;
         this.pageNum = pageNum;
@@ -46,7 +52,8 @@ public class NewsThread implements Runnable {
     }
 
     //按关键词查找新闻
-    public NewsThread(CallBack console, NewsSearchType nst, String keyword, int pageNum, int pageSize, int category) {
+    public NewsThread(Console console, NewsSearchType nst, String keyword, int pageNum, int pageSize, int category) {
+        this.handler = handler;
         this.console = console;
         this.nst = nst;
         this.keyword = keyword;
@@ -56,7 +63,8 @@ public class NewsThread implements Runnable {
     }
 
     //按ID得到新闻详细内容
-    public NewsThread(CallBack console, NewsSearchType nst, String ID) {
+    public NewsThread(Console console, NewsSearchType nst, String ID) {
+        this.handler = handler;
         this.console = console;
         this.nst = nst;
         this.ID = ID;
@@ -103,5 +111,11 @@ public class NewsThread implements Runnable {
         catch(IOException e) {
             Log.i("NewsThread", "IOException");
         }
+
+        //while(!Thread.currentThread().isInterrupted()) {
+            Message msg = new Message();
+            msg.what = 1;
+            handler.sendMessage(msg);
+        //}
     }
 }
