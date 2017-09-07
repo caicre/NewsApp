@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 newsTitleList = (TextView) findViewById(R.id.news_title_list);
-                newsTitleList.clearComposingText();
+                newsTitleList.setText("");
                 newsTitleList.append(console.str);
                 swipeRefresh.setRefreshing(false);
                 //mHandler.sendEmptyMessage(1);
