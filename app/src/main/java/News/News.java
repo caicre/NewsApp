@@ -4,7 +4,7 @@ package News;
  * Created by YeB on 2017/9/7.
  */
 
-class News {
+public class News {
     private String id;
     private String title;
     private String author;
