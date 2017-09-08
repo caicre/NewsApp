@@ -1,16 +1,14 @@
 package NewsApi;
 
-import android.app.Notification;
-import android.webkit.ClientCertRequest;
-
-import Console.Console;
-
 import java.net.*;
 import java.io.*;
-
 import android.util.Log;
 import android.os.Handler;
 import android.os.Message;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import Console.Console;
 
 /**
  * Created by cai on 2017/9/7.
@@ -53,7 +51,7 @@ public class NewsThread implements Runnable {
 
     //按关键词查找新闻
     public NewsThread(Console console, NewsSearchType nst, String keyword, int pageNum, int pageSize, int category) {
-        this.handler = handler;
+        this.handler = console.handler;
         this.console = console;
         this.nst = nst;
         this.keyword = keyword;
@@ -62,9 +60,9 @@ public class NewsThread implements Runnable {
         this.category = category;
     }
 
-    //按ID得到新闻详细内容
+    //按ID得到新闻详细内容，或按地址得到图片
     public NewsThread(Console console, NewsSearchType nst, String ID) {
-        this.handler = handler;
+        this.handler = console.handler;
         this.console = console;
         this.nst = nst;
         this.ID = ID;
@@ -92,18 +90,33 @@ public class NewsThread implements Runnable {
             case ID:
                 urlStr.append("detail?newsId="+ID);
                 break;
+            case Picture:
+                urlStr = new StringBuffer(ID);
         }
 
         try {
             URL url = new URL(urlStr.toString());
-            BufferedReader in = new BufferedReader(new
-                    InputStreamReader(url.openStream()));
-            String inputLine;
-            if((inputLine = in.readLine()) != null) {
-                console.CallBackStr(inputLine);
-                Log.i("NewsThread", inputLine);
+
+            if(nst == NewsSearchType.Picture) {
+                URLConnection con = url.openConnection();
+                con.setDoInput(true);
+                con.connect();
+                InputStream is = con.getInputStream();
+                Bitmap pic = BitmapFactory.decodeStream(is);
+                is.close();
+
+                console.CallBackBitmap(pic, ID);
             }
-            in.close();
+            else {
+                BufferedReader in = new BufferedReader(new
+                        InputStreamReader(url.openStream()));
+                String inputLine;
+                if((inputLine = in.readLine()) != null) {
+                    console.CallBackStr(inputLine);
+                    Log.i("NewsThread", inputLine);
+                }
+                in.close();
+            }
         }
         catch(MalformedURLException e) {
             Log.i("NewsThread", "MalformedURLException");
@@ -112,10 +125,8 @@ public class NewsThread implements Runnable {
             Log.i("NewsThread", "IOException");
         }
 
-        //while(!Thread.currentThread().isInterrupted()) {
-            Message msg = new Message();
-            msg.what = 1;
-            handler.sendMessage(msg);
-        //}
+        Message msg = new Message();
+        msg.what = Console.refresh;
+        handler.sendMessage(msg);
     }
 }
