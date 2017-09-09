@@ -20,7 +20,7 @@ public class DataConsole {
     static final int PICTURE_QUALITY = 100; //0~100: 100为最高
     private NewsDetailDbConsole dbConsole;
 
-    public DataConsole(AppCompatActivity a){
+    public DataConsole(Context a){
         dbConsole = new NewsDetailDbConsole(a);
         dbConsole.createDB();
     }
