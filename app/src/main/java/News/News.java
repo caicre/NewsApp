@@ -13,10 +13,10 @@ public class News {
     private String classTag;
     private String time;
     private String intro;
-    private String []pictures;
+    private String []pictures;  //图片URL
     private String url;	//来源网址
     private String source;	//来源
-    private Bitmap thumbData;
+    private Bitmap thumbData;   //压缩图片
     News(String id, String title, String author, String classTag, String time, String intro,
          String[] pictures, String url, String source){
         this.id = id;

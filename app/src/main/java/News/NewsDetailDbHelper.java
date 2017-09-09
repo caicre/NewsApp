@@ -22,11 +22,11 @@ package News;
 public class NewsDetailDbHelper extends SQLiteOpenHelper{
     private Context nContext;
     public static final String CREATE_NEWS =  "create table news("+
-            "id text primary key,"+"title text,"+"author text,"+
-            "classTag text,"+"time text,"+"intro text,"+
+            "id integer primary key autoincrement,"+"nid text,"+"title text,"
+            +"author text,"+"classTag text,"+"time text,"+"intro text,"+
             "pictures text,"+"url text,"+"source text,"+
             "content text,"+"category text,"+"journal text,"+
-            "isLiked text)";
+            "thumbimage blob,"+"isLiked text)";
     //构造方法：第一个参数Context，第二个参数数据库名，第三个参数cursor允许我们在查询数据的时候返回一个自定义的光标位置，一般传入的都是null，第四个参数表示目前库的版本号（用于对库进行升级）
     public NewsDetailDbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -42,6 +42,13 @@ public class NewsDetailDbHelper extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
+        //如果news表已存在则删除表
+        db.execSQL("drop table if exists news");
+        onCreate(db);
+    }
+
+    //清空数据库
+    public void clear(SQLiteDatabase db){
         //如果news表已存在则删除表
         db.execSQL("drop table if exists news");
         onCreate(db);

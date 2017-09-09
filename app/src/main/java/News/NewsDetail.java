@@ -12,7 +12,7 @@ public class NewsDetail extends News{
     private String content;
     private String category;
     private String journal; //记者
-    public ArrayList<Bitmap> pictureData;
+    public ArrayList<Bitmap> pictureData;   //图片
     NewsDetail(String id, String title, String author, String classTag, String time, String intro,
                String[] pictures, String url, String source, String content, String category, String journal)
     {
