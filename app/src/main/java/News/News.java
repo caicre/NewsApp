@@ -1,5 +1,7 @@
 package News;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by YeB on 2017/9/7.
  */
@@ -14,6 +16,7 @@ public class News {
     private String []pictures;
     private String url;	//来源网址
     private String source;	//来源
+    private Bitmap thumbData;
     News(String id, String title, String author, String classTag, String time, String intro,
          String[] pictures, String url, String source){
         this.id = id;
@@ -25,6 +28,7 @@ public class News {
         this.pictures = pictures;
         this.url = url;
         this.source = source;
+        this.thumbData = null;
     }
     public String getId(){ return id; }
     public String getTitle(){ return title; }
@@ -35,4 +39,5 @@ public class News {
     public String[] getPictures(){ return pictures; }
     public String getUrl(){ return url; }
     public String getSource(){ return source; }
+    public void setThumb(Bitmap bitmap) { this.thumbData = bitmap; }
 }

@@ -11,7 +11,7 @@ public class NewsDetail extends News{
     private String category;
     private String journal; //记者
     private String[] pictureSrc;//图片存储地址
-    private Bitmap[] picture;
+    private Bitmap[] pictureData;
     NewsDetail(String id, String title, String author, String classTag, String time, String intro,
                String[] pictures, String url, String source, String content, String category, String journal)
     {
@@ -19,6 +19,7 @@ public class NewsDetail extends News{
         this.content = content;
         this.category = category;
         this.journal = journal;
+        this.pictureData = new Bitmap[pictures.length];
     }
     public String getContent(){ return content; }
     public String getCategory(){ return category; }
