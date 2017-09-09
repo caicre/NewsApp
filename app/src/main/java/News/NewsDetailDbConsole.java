@@ -46,18 +46,18 @@ public class NewsDetailDbConsole {
         return values;
     }
     private byte[] bmpToByteArray(Bitmap bmp) {
-        // Default size is 32 bytes  
+        // Default size is 32 bytes
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         if(bmp == null)
             return null;
-        try {  
+        try {
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             bos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return bos.toByteArray();
-    }  
+    }
     private NewsDetail getColumns(Cursor cursor){
         NewsDetail n;
         String nid = cursor.getString(cursor.getColumnIndex("nid"));

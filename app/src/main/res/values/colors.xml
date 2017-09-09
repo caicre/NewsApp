@@ -8,4 +8,6 @@
     <color name="intro_text">#727272</color>
     <color name="red">#FF0000</color>
     <color name="black">#000000</color>
+    <color name="AliceBlue">#F0F8FF</color>
+    <color name="Blue">#191970</color>
 </resources>

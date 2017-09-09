@@ -8,11 +8,11 @@ package News;
 要改善的部分：
 1. ADD_NEWS时，若在标题或内容中有双引号,逗号会发生异常（SQLiteDatabase.execSQL()中）
 */
-        import android.content.Context;
-        import android.database.sqlite.SQLiteDatabase;
-        import android.database.sqlite.SQLiteOpenHelper;
-        import android.provider.BaseColumns;
-        import android.widget.Toast;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
+import android.widget.Toast;
 
 /**
  * Created by YeB on 2017/9/7.
@@ -22,7 +22,7 @@ package News;
 public class NewsDetailDbHelper extends SQLiteOpenHelper{
     private Context nContext;
     public static final String CREATE_NEWS =  "create table news("+
-            "id integer primary key autoincrement,"+"nid text,"+"title text,"
+            "id integer primary key autoincrement,"+"nid text,"+"title text,"
             +"author text,"+"classTag text,"+"time text,"+"intro text,"+
             "pictures text,"+"url text,"+"source text,"+
             "content text,"+"category text,"+"journal text,"+

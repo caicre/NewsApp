@@ -19,8 +19,8 @@ public class SearchResultActivity extends AppCompatActivity implements NewsActiv
     private ArrayList<News> newsList;
     private View view;
 
-    public void setNewsList(ArrayList<News> news) {
-        newsList = news;
+    public void addNewsList(ArrayList<News> news) {
+        newsList.addAll(news);
     }
 
     public void refresh() {
@@ -29,6 +29,7 @@ public class SearchResultActivity extends AppCompatActivity implements NewsActiv
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        newsList = new ArrayList<News>();
 
         Intent intent = getIntent();
         Console console = new Console(this);

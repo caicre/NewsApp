@@ -9,6 +9,7 @@ import android.view.View;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.cai.newsapp.MainActivity;
 
 /**
@@ -37,14 +38,14 @@ public class Console {
         bitmap = null;
     }
 
-    public void CallBackStr(String str){
+    public synchronized void CallBackStr(String str){
         if(activity instanceof MainActivity) {
             MainActivity act = (MainActivity) activity;
-            act.setNewsList(DataConsole.toNewsArr(str));
+            act.addNewsList(DataConsole.toNewsArr(str));
         }
         else if(activity instanceof SearchResultActivity) {
             SearchResultActivity act = (SearchResultActivity) activity;
-            act.setNewsList(DataConsole.toNewsArr(str));
+            act.addNewsList(DataConsole.toNewsArr(str));
         }
         else if(true){//增加新闻详情页内容
 
