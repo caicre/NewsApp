@@ -4,28 +4,26 @@ package News;
  * Created by YeB on 2017/9/7.
  */
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.regex.*;
 import java.util.ArrayList;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
-import java.util.regex.*;
-import java.util.ArrayList;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-
-import java.util.regex.*;
-import java.util.ArrayList;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-
-import java.util.regex.*;
-import java.util.ArrayList;
 
 public class DataConsole {
+    static final int PICTURE_QUALITY = 100; //0~100: 100为最高
+    private NewsDetailDbConsole dbConsole;
+
+    public DataConsole(AppCompatActivity a){
+        dbConsole = new NewsDetailDbConsole(a);
+        dbConsole.createDB();
+    }
 
     //string to NewsDetail
     static public NewsDetail toNewsDetail(String newsStr){
@@ -60,7 +58,6 @@ public class DataConsole {
 
         return n;
     }
-
     //string to News
     static public News toNews(String newsStr) {
         Pattern pClassTag = Pattern.compile("\"newsClassTag\":\"(.*?)\"");
@@ -84,10 +81,10 @@ public class DataConsole {
         m = pTitle.matcher(newsStr); m.find(); title = m.group(1);
         m = pUrl.matcher(newsStr); m.find(); url = m.group(1);
         m = pIntro.matcher(newsStr); m.find(); intro = m.group(1);
+
         News n = new News(id, title, author, classTag, time, intro, pictures, url, source);
         return n;
     }
-
     //page string to NewsArr
     static public ArrayList<News> toNewsArr(String str) {
         ArrayList<News> news = new ArrayList<News>();
@@ -101,5 +98,63 @@ public class DataConsole {
         return news;
     }
 
+    //pictureUrl->pictureDataName
+    static public String toFileName(String pictureUrl){
+        return pictureUrl.replace("/","").replace("\\","").replace(":","").replace("*","").replace("?","").replace("\"","").replace("<","").replace(">","").replace("|","");
+}
+    //通过newsId查找NewsDetail(并且把本地的图片放到内存中) (找不到时，返回null)
+    public NewsDetail getNewDetail(Context context, String id){
+        NewsDetail n = null;
+        n = dbConsole.findNews(id);
+        n = newsWithPicture(context, n);
+        return n;
+    }
+    //填写NewsDetail的ArrayList<Bitmap>
+    private NewsDetail newsWithPicture(Context context, NewsDetail n){
+        for(String pictureUrl : n.getPictures()){
+            n.addPictureData(loadPicture(context, pictureUrl));
+        }
+        return n;
+    }
+    //通过图片URL找到本地的图片
+    public Bitmap loadPicture(Context context, String pictureUrl){
+        Bitmap bitmap = null;
+        FileInputStream fiStream;
+        try{
+            fiStream = context.openFileInput(toFileName(pictureUrl));
+            bitmap = BitmapFactory.decodeStream(fiStream);
+            fiStream.close();
+        }catch (Exception e) {
+            Log.d("loadPicture", "Exception: IOException");
+        }
+        return bitmap;
+    }
+    //存储图片(名字为通过toFileName处理后的URL)
+    public void savePicture(Context context, Bitmap bitmap, String pictureUrl){
+        FileOutputStream foStream;
+        try{
+            foStream = context.openFileOutput(toFileName(pictureUrl), Context.MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.PNG, PICTURE_QUALITY, foStream);
+            foStream.close();
+        }catch (Exception e){
+            Log.d("savePicture", "Exception: IOException");
+        }
+    }
+    //获取最近浏览新闻(返回类型是ArrayList<News>)
+    public ArrayList<News> getNewsHistory(){
+        ArrayList<News> newsHistory = null;
+        newsHistory = dbConsole.getNewsList(false);
+        return newsHistory;
+    }
+    //获取所有收藏的NewsDetail(返回类型是ArrayList<News>)
+    public ArrayList<News> getNewsCollection(){
+        ArrayList<News> newsCollection = null;
+        newsCollection = dbConsole.getNewsList(true);
+        return newsCollection;
+    }
+    //清空数据库
+    public void clear(){
+        dbConsole.clear();
+    }
 }
 
