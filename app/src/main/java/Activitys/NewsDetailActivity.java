@@ -29,7 +29,7 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsActivit
 
         Intent intent = getIntent();
         Console console = new Console(this);
-        NewsThread runnable = new NewsThread(console, NewsSearchType.ID, intent.getStringExtra("ID"));
+        NewsThread runnable = new NewsThread(console, NewsSearchType.Id, intent.getStringExtra("ID"));
         Thread thread = new Thread(runnable);
         thread.start();
     }
