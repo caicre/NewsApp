@@ -165,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
 
         newsList = new ArrayList<News>();
         adapt = new ListViewAdapter(newsList);
+        adapt.setActivity(this);
         console = new Console(this);
         pageNum = 1;
         picNum = 1;
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String dec = String.format("点击了第%d个新闻",position+1);
                 Toast.makeText(MainActivity.this,dec,Toast.LENGTH_LONG).show();
-
+                changeToNewsDetailActivity(newsList.get(position).getUrl());
             }
         });
 
@@ -279,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
             holder=(ViewHolder)convertView.getTag();
             News news=newsList.get(position);                                   //将holder与目标内容关联
             holder.title.setText(news.getTitle());
-            Glide.with(activity).load(activity.getNewsPicUrl(activity.picNum)).into(holder.image);
+            Glide.with(activity).load(activity.getNewsPicUrl(position)).into(holder.image);
             //holder.image.setImageBitmap(news.getThumb());
             holder.intro.setText(news.getIntro());
             return convertView;
@@ -350,7 +351,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
         startActivity(intent);
     }
 
-    public void changeNewsDetailActivity(String ID) {
+    public void changeToNewsDetailActivity(String ID) {
         Intent intent = new Intent(this, NewsDetailActivity.class);
         intent.putExtra("ID", ID);
         startActivity(intent);
