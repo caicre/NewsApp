@@ -17,10 +17,12 @@ import java.util.ArrayList;
  */
 
 public class NewsDetailDbConsole {
-    private NewsDetailDbHelper dbHelper;
+    static private NewsDetailDbHelper dbHelper;
     static final int HISTORY_NUM = 10;
     NewsDetailDbConsole(Context context) {
-        dbHelper = new NewsDetailDbHelper(context, "NewsDetail.db", null, 1); // a要改为"类名.this"吗？
+        //DatabaseHelper 只能定义一个
+        if(dbHelper == null)
+            dbHelper = new NewsDetailDbHelper(context, "NewsDetail.db", null, 1); // a要改为"类名.this"吗？
     }
     private ContentValues getContentValues (NewsDetail n){
         ContentValues values = new ContentValues();
