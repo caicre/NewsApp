@@ -6,88 +6,7 @@ import News.*;
 import Console.Console;
 import Activitys.*;
 
-/*
 import java.util.*;
-
-import android.content.Intent;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.view.Menu;
-import android.widget.TextView;
-
-public class MainActivity extends AppCompatActivity implements NewsActivity {
-
-    private View view;
-    private SwipeRefreshLayout swipeRefresh;
-    private String key="0";
-
-    public void refresh(){
-        view.invalidate();
-    }
-
-    public void setNewsList(ArrayList<News> news){
-        newsList = news;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        view = (TextView) findViewById(R.id.news_title_list);
-        SwipeRefresh();
-        
-
-       contentToView();
-    }
-
-    //点击搜索按钮，启动SearchResultActivity，在该activity中访问网络
-    public void changeToSearchActivity(NewsSearchType nst, String keyword, int pageNum, int pageSize, int category) {
-        Intent intent = new Intent(this, SearchResultActivity.class);
-        intent.putExtra("nst", nst.toString());
-        intent.putExtra("keyword", keyword);
-        intent.putExtra("pageNum", pageNum);
-        intent.putExtra("pageSize", pageSize);
-        intent.putExtra("category", category);
-        startActivity(intent);
-    }
-
-    public void changeNewsDetailActivity(String ID) {
-        Intent intent = new Intent(this, NewsDetailActivity.class);
-        intent.putExtra("ID", ID);
-        startActivity(intent);
-    }
-
-    //这里需要实现将newsList的东西放到view中
-    private void contentToView() {
-    }
-
-    public void SwipeRefresh(){
-        swipeRefresh = (SwipeRefreshLayout)findViewById(R.id.swipeLayout);
-        swipeRefresh.setColorSchemeResources(R.color.blue);
-        swipeRefresh.setSize(SwipeRefreshLayout.DEFAULT);
-        swipeRefresh.setProgressBackgroundColor(R.color.colorPrimary);
-        swipeRefresh.setProgressViewEndTarget(true, 200);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
-            @Override
-            public void onRefresh(){
-                contentToView();
-                swipeRefresh.setRefreshing(false);
-            }
-        });
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.main, menu);          //打开页面时调用，将对应的xml文件与menu类绑定
-        return true;
-    }
-}
-*/
-
-import java.util.*;
-
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -114,8 +33,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-
-import static android.R.id.list;
 
 public class MainActivity extends AppCompatActivity implements NewsActivity {
     private static final int newsNumPer = 10;
@@ -278,9 +195,10 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
             }
 
             holder=(ViewHolder)convertView.getTag();
-            News news=newsList.get(position);                                   //将holder与目标内容关联
+            News news = newsList.get(position);                                   //将holder与目标内容关联
             holder.title.setText(news.getTitle());
-            Glide.with(activity).load(activity.getNewsPicUrl(position)).into(holder.image);
+            holder.image.setImageBitmap(news.getThumb());
+            //Glide.with(activity).load(activity.getNewsPicUrl(position)).into(holder.image);
             //holder.image.setImageBitmap(news.getThumb());
             holder.intro.setText(news.getIntro());
             return convertView;

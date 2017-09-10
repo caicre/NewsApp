@@ -1,6 +1,7 @@
 package Console;
 
 import Activitys.*;
+import News.*;
 import News.DataConsole;
 
 import android.os.Handler;
@@ -8,9 +9,12 @@ import android.os.Message;
 import android.view.View;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.bumptech.glide.Glide;
 import com.example.cai.newsapp.MainActivity;
+
+import java.util.ArrayList;
 
 /**
  * Created by cai on 2017/9/7.
@@ -41,7 +45,17 @@ public class Console {
     public synchronized void CallBackStr(String str){
         if(activity instanceof MainActivity) {
             MainActivity act = (MainActivity) activity;
-            act.addNewsList(DataConsole.toNewsArr(str));
+            ArrayList<News> newNewsList = DataConsole.toNewsArr(str);
+            for(News news: newNewsList) {
+                try {
+                    //图片的大小临时取200，200
+                    news.setThumb(Glide.with(act).load(news.getPictures()[0]).asBitmap().into(200, 200).get());
+                }
+                catch(Exception e) {
+                    Log.e("Exception", e.toString());
+                }
+            }
+            act.addNewsList(newNewsList);
         }
         else if(activity instanceof SearchResultActivity) {
             SearchResultActivity act = (SearchResultActivity) activity;
