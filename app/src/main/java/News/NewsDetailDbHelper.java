@@ -22,8 +22,8 @@ import android.widget.Toast;
 public class NewsDetailDbHelper extends SQLiteOpenHelper{
     private Context nContext;
     public static final String CREATE_NEWS =  "create table news("+
-            "id integer primary key autoincrement,"+"nid text,"+"title text,"
-            +"author text,"+"classTag text,"+"time text,"+"intro text,"+
+            "id integer primary key autoincrement,"+"nid text,"+"title text,"
+            +"author text,"+"classtag text,"+"time text,"+"intro text,"+
             "pictures text,"+"url text,"+"source text,"+
             "content text,"+"category text,"+"journal text,"+
             "thumbimage blob,"+"isLiked text)";
@@ -46,12 +46,4 @@ public class NewsDetailDbHelper extends SQLiteOpenHelper{
         db.execSQL("drop table if exists news");
         onCreate(db);
     }
-
-    //清空数据库
-    public void clear(SQLiteDatabase db){
-        //如果news表已存在则删除表
-        db.execSQL("drop table if exists news");
-        onCreate(db);
-    }
-
 }

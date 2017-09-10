@@ -60,6 +60,7 @@ public class NewsDetailDbConsole {
     }  
     private NewsDetailLiked getColumns(Cursor cursor){
         NewsDetailLiked n;
+        Log.d("getColums(DbCon)", "start");
         String nid = cursor.getString(cursor.getColumnIndex("nid"));
         String title = cursor.getString(cursor.getColumnIndex("title"));
         String author = cursor.getString(cursor.getColumnIndex("author"));
@@ -79,7 +80,10 @@ public class NewsDetailDbConsole {
             n.setIsLiked(false);
 
         byte[] data = cursor.getBlob(cursor.getColumnIndex("thumbimage"));
-        //没有thumbImage, 直接以null来替代
+        //没有thumbImage, 会返回thumbImage为null的NewsDetail对象
+        if(data==null)
+            return n;
+
         if(data.length != 0) {
             Bitmap thumbImage = BitmapFactory.decodeByteArray(data, 0, data.length);
             n.setThumb(thumbImage);
@@ -169,9 +173,11 @@ public class NewsDetailDbConsole {
                 do {
                     //然后通过Cursor的getColumnIndex()获取某一列中所对应的位置的索引
                     n = getColumns(cursor);
+                    if(n == null)
+                        continue;
                     list.add(n);
                     i--;
-                } while (cursor.moveToNext() && i>HISTORY_NUM);
+                } while (cursor.moveToNext() && i>0);
             }
             cursor.close();
         }
@@ -189,6 +195,8 @@ public class NewsDetailDbConsole {
                 do {
                     //然后通过Cursor的getColumnIndex()获取某一列中所对应的位置的索引
                     n = getColumns(cursor);
+                    if(n == null)
+                        continue;
                     list.add(n);
                 }while(cursor.moveToNext());
             }
@@ -196,8 +204,10 @@ public class NewsDetailDbConsole {
         }
         return list;
     }
-
+    //清空数据库
     public void clear() {
-        dbHelper.close();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.execSQL("drop table if exists news");
+        dbHelper.onCreate(db);
     }
 }
