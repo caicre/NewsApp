@@ -46,20 +46,20 @@ public class NewsDetailDbConsole {
         return values;
     }
     private byte[] bmpToByteArray(Bitmap bmp) {
-        // Default size is 32 bytes
+        // Default size is 32 bytes  
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         if(bmp == null)
             return null;
-        try {
+        try {  
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             bos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return bos.toByteArray();
-    }
-    private NewsDetail getColumns(Cursor cursor){
-        NewsDetail n;
+    }  
+    private NewsDetailLiked getColumns(Cursor cursor){
+        NewsDetailLiked n;
         String nid = cursor.getString(cursor.getColumnIndex("nid"));
         String title = cursor.getString(cursor.getColumnIndex("title"));
         String author = cursor.getString(cursor.getColumnIndex("author"));
@@ -72,7 +72,11 @@ public class NewsDetailDbConsole {
         String content = cursor.getString(cursor.getColumnIndex("content"));
         String category = cursor.getString(cursor.getColumnIndex("category"));
         String journal = cursor.getString(cursor.getColumnIndex("journal"));
-        n = new NewsDetail(nid,title, author, classTag, time, intro, pictures, url, source, content, category, journal);
+        n = new NewsDetailLiked(nid,title, author, classTag, time, intro, pictures, url, source, content, category, journal);
+        if(cursor.getString(cursor.getColumnIndex("isLiked")).toLowerCase().equals("true"))
+            n.setIsLiked(true);
+        else
+            n.setIsLiked(false);
 
         byte[] data = cursor.getBlob(cursor.getColumnIndex("thumbimage"));
         //没有thumbImage, 直接以null来替代
@@ -102,6 +106,20 @@ public class NewsDetailDbConsole {
             values.put("isLiked","false");
         db.insert("news", null, values);
         values.clear();
+    }
+    public void setNewsIsLiked(NewsDetail n, boolean isLiked){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        //指明去查询news表。
+        String table = "news";
+        String selection = "nid=?";
+        String[] selectionArgs = new String[]{ n.getId() };
+        ContentValues values = getContentValues(n);
+        if(isLiked)
+            values.put("isLiked", "true");
+        else
+            values.put("isLiked","false");
+        //调用moveToFirst()将数据指针移动到第一行的位置。
+        db.update(table, values, selection, selectionArgs);
     }
     public void deleteNews(String nid){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
