@@ -87,7 +87,7 @@ public class NewsThread implements Runnable {
                             append("&category="+String.valueOf(category));
                 }
                 break;
-            case ID:
+            case Id:
                 urlStr.append("detail?newsId="+ID);
                 break;
             case Picture:
@@ -96,7 +96,6 @@ public class NewsThread implements Runnable {
 
         try {
             URL url = new URL(urlStr.toString());
-
             if(nst == NewsSearchType.Picture) {
                 URLConnection con = url.openConnection();
                 con.setDoInput(true);
@@ -123,6 +122,7 @@ public class NewsThread implements Runnable {
         }
         catch(IOException e) {
             Log.i("NewsThread", "IOException");
+            e.printStackTrace();
         }
 
         Message msg = new Message();

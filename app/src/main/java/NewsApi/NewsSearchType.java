@@ -5,5 +5,5 @@ package NewsApi;
  */
 
 public enum NewsSearchType {
-    Latest, Keyword, ID, Picture
+    Latest, Keyword, Id, Picture
 }
