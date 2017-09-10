@@ -16,8 +16,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.view.ViewGroup;
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
 
     ListViewAdapter adapt;
 
-    final String click_Load_More="点击加载更多";
+    final String click_Load_More="下拉加载更多";
     final String loading_Load_More="加载中...";
     final String comp_Load_More="没有更多";
     String nowNormalText = "";
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setToolbar();
 
         newsList = new ArrayList<News>();
         adapt = new ListViewAdapter(newsList);
@@ -95,9 +98,11 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {            //设置点击事件
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String dec = String.format("点击了第%d个新闻",position+1);
-                Toast.makeText(MainActivity.this,dec,Toast.LENGTH_LONG).show();
-                changeToNewsDetailActivity(newsList.get(position).getUrl());
+                /*Intent intent=new Intent();
+                intent.setClass(MainActivity.this,DetailActivity.class);
+                startActivity(intent);*/
+                //changeToNewsDetailActivity(newsList.get(position).getUrl());
+                Toast.makeText(MainActivity.this,"进入详情",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -120,11 +125,27 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
         id_pull_to_refresh_loadmore_text = (TextView) listview_footer_view.findViewById(R.id.id_pull_to_refresh_loadmore_text);
         nowNormalText = click_Load_More;
         id_pull_to_refresh_loadmore_text.setClickable(true);
-        id_pull_to_refresh_loadmore_text.setOnClickListener(new View.OnClickListener() {
+        /*id_pull_to_refresh_loadmore_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadMore();
             }
+        });*/
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener(){
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    if (view.getLastVisiblePosition() == view.getCount() - 1) {
+                        loadMore();
+                    }
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+
         });
 //点击加载更多设置完成↑
         loadMore();
@@ -273,5 +294,25 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
         Intent intent = new Intent(this, NewsDetailActivity.class);
         intent.putExtra("ID", ID);
         startActivity(intent);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemThatWasClickedId = item.getItemId();
+        if (itemThatWasClickedId == R.id.search) {
+            Toast.makeText(MainActivity.this,"进入搜索界面",Toast.LENGTH_LONG).show();               //菜单监听，进入搜索
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.mtoolbar);
+        setSupportActionBar(toolbar);
     }
 }
