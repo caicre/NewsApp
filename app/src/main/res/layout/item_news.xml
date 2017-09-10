@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/newsTitle"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/title_text"
+                android:textColor="@color/text_color_selected"
                 android:textSize="16sp"
                 android:singleLine="true" />
 

@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
     boolean isLoading = false;  //是否正在加载
     boolean isComp = false;     //是否加载完成
 
+    int mPosition=-1;
+
 
     RelativeLayout id_rl_loading;
     TextView id_pull_to_refresh_loadmore_text;
@@ -102,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
                 intent.setClass(MainActivity.this,DetailActivity.class);
                 startActivity(intent);*/
                 //changeToNewsDetailActivity(newsList.get(position).getUrl());
+                mPosition = position;
+                adapt.notifyDataSetChanged();
                 Toast.makeText(MainActivity.this,"进入详情",Toast.LENGTH_LONG).show();
             }
         });
@@ -164,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
                     @Override
                     public void run() {
                         refreshData();
+                        mPosition = -1;
                         adapt.notifyDataSetChanged();
                         mSwipe.setRefreshing(false);
                     }
@@ -222,6 +227,14 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
             //Glide.with(activity).load(activity.getNewsPicUrl(position)).into(holder.image);
             //holder.image.setImageBitmap(news.getThumb());
             holder.intro.setText(news.getIntro());
+
+            if(mPosition==-1){
+                holder.title.setEnabled(false);
+            }
+            else if(mPosition==position){
+                holder.title.setEnabled(true);
+            }
+            
             return convertView;
         }
     }
@@ -273,9 +286,10 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
             newsList.add(news);
         }*/
         //adapt.notifyDataSetChanged();
+        mPosition = -1;
         isLoading = false;
         id_pull_to_refresh_loadmore_text.setText(click_Load_More);
-        id_pull_to_refresh_loadmore_text.setClickable(true);
+        id_pull_to_refresh_loadmore_text.setClickable(false);
         id_pull_to_refresh_load_progress.setVisibility(View.GONE);
     }
 
