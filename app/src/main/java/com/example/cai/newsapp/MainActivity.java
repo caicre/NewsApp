@@ -1,15 +1,16 @@
 package com.example.cai.newsapp;
 
-import NewsApi.NewsSearchType;
-import NewsApi.NewsThread;
-import News.*;
-import Console.Console;
-import Activitys.*;
+import com.example.cai.newsapp.NewsApi.NewsSearchType;
+import com.example.cai.newsapp.NewsApi.NewsThread;
+import com.example.cai.newsapp.News.*;
+import com.example.cai.newsapp.Console.Console;
+import com.example.cai.newsapp.*;
 
 import java.util.*;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.graphics.*;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -100,13 +101,14 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {            //设置点击事件
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /*Intent intent=new Intent();
-                intent.setClass(MainActivity.this,DetailActivity.class);
-                startActivity(intent);*/
-                //changeToNewsDetailActivity(newsList.get(position).getUrl());
+                Intent intent=new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("ID", newsList.get(position).getId());
+                startActivity(intent);
+
                 mPosition = position;
                 adapt.notifyDataSetChanged();
                 Toast.makeText(MainActivity.this,"进入详情"+position,Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -128,12 +130,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
         id_pull_to_refresh_load_progress.setVisibility(View.GONE);
         id_pull_to_refresh_loadmore_text = (TextView) listview_footer_view.findViewById(R.id.id_pull_to_refresh_loadmore_text);
         nowNormalText = click_Load_More;
-        /*id_pull_to_refresh_loadmore_text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadMore();
-            }
-        });*/
+
         mListView.setOnScrollListener(new AbsListView.OnScrollListener(){
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -222,9 +219,12 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
             holder=(ViewHolder)convertView.getTag();
             News news = newsList.get(position);                                   //将holder与目标内容关联
             holder.title.setText(news.getTitle());
-            holder.image.setImageBitmap(news.getThumb());
-            //Glide.with(activity).load(activity.getNewsPicUrl(position)).into(holder.image);
-            //holder.image.setImageBitmap(news.getThumb());
+            Bitmap bitmap = null;
+            if(news.getThumb() == null)
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.news_pic);
+            else
+                bitmap = news.getThumb();
+            holder.image.setImageBitmap(bitmap);
             holder.intro.setText(news.getIntro());
 
             if(mPosition==-1){
@@ -298,12 +298,6 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
         intent.putExtra("pageNum", pageNum);
         intent.putExtra("pageSize", pageSize);
         intent.putExtra("category", category);
-        startActivity(intent);
-    }
-
-    public void changeToNewsDetailActivity(String ID) {
-        Intent intent = new Intent(this, NewsDetailActivity.class);
-        intent.putExtra("ID", ID);
         startActivity(intent);
     }
 
