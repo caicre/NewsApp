@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
 
     ListViewAdapter adapt;
 
-    final String click_Load_More="下拉加载更多";
+    final String click_Load_More="加载中...";
     final String loading_Load_More="加载中...";
     final String comp_Load_More="没有更多";
     String nowNormalText = "";
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
                 //changeToNewsDetailActivity(newsList.get(position).getUrl());
                 mPosition = position;
                 adapt.notifyDataSetChanged();
-                Toast.makeText(MainActivity.this,"进入详情",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this,"进入详情"+position,Toast.LENGTH_LONG).show();
             }
         });
 
@@ -122,13 +122,12 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
 
 //设置点击加载更多↓
         View listview_footer_view = LayoutInflater.from(this).inflate(R.layout.listview_footer, null);
-        mListView.addFooterView(listview_footer_view);
+        mListView.addFooterView(listview_footer_view,null,false);
         id_rl_loading= (RelativeLayout) listview_footer_view.findViewById(R.id.id_rl_loading);
         id_pull_to_refresh_load_progress = (ProgressBar) listview_footer_view.findViewById(R.id.id_pull_to_refresh_load_progress);
         id_pull_to_refresh_load_progress.setVisibility(View.GONE);
         id_pull_to_refresh_loadmore_text = (TextView) listview_footer_view.findViewById(R.id.id_pull_to_refresh_loadmore_text);
         nowNormalText = click_Load_More;
-        id_pull_to_refresh_loadmore_text.setClickable(true);
         /*id_pull_to_refresh_loadmore_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
             else if(mPosition==position){
                 holder.title.setEnabled(true);
             }
-            
+
             return convertView;
         }
     }
@@ -255,7 +254,6 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
     private void loadMore(){
         id_rl_loading.setVisibility(View.VISIBLE);
         id_pull_to_refresh_loadmore_text.setText(loading_Load_More);
-        id_pull_to_refresh_loadmore_text.setClickable(false);
         id_pull_to_refresh_load_progress.setVisibility(View.VISIBLE);
         isLoading = true;
         picNum += newsNumPer;
@@ -289,7 +287,6 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
         mPosition = -1;
         isLoading = false;
         id_pull_to_refresh_loadmore_text.setText(click_Load_More);
-        id_pull_to_refresh_loadmore_text.setClickable(false);
         id_pull_to_refresh_load_progress.setVisibility(View.GONE);
     }
 
