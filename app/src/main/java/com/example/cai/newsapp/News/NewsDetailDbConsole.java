@@ -131,6 +131,7 @@ public class NewsDetailDbConsole {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete("news", "nid=?", new String[]{ nid });
     }
+    //查询新闻，若找不到返回null
     public NewsDetail findNews(String nid){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         //指明去查询news表。

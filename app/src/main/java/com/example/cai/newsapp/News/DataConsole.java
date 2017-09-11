@@ -128,6 +128,7 @@ public class DataConsole {
             fiStream.close();
         }catch (Exception e) {
             Log.d("loadPicture", "Exception: IOException");
+            e.printStackTrace();
         }
         return bitmap;
     }
@@ -140,6 +141,7 @@ public class DataConsole {
             foStream.close();
         }catch (Exception e){
             Log.d("savePicture", "Exception: IOException");
+            //e.printStackTrace();
         }
     }
     //获取最近浏览新闻(返回类型是ArrayList<News>)
@@ -176,6 +178,19 @@ public class DataConsole {
         if(dbConsole.findNews(n.getId())==null)
             Log.d("DataConsole: delCollect", "there isn't the NewsDetail in Database");
         dbConsole.setNewsIsLiked(n, false);
+    }
+    public boolean contain(NewsDetail n){
+        if(dbConsole.findNews(n.getId()) == null)
+            return false;
+        else
+            return true;
+    }
+    //从数据库中找NewsDetail, 并且吧图片加载
+    public NewsDetail findNews(Context context, String nid){
+        NewsDetail n = dbConsole.findNews(nid);
+        for(String picUrl : n.getPictures())
+            n.addPictureData(loadPicture(context, picUrl));
+        return n;
     }
     //清空数据库
     public void clear(){
