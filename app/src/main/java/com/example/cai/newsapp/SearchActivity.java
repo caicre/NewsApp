@@ -17,6 +17,8 @@ import static android.R.id.list;
 public class SearchActivity extends AppCompatActivity{
     private SearchView mSearchView;
     Button Btn[] = new Button[13];
+    static String[] tagList = {"科技","教育","军事","国内","社会","文化","汽车","国际","体育","财经","健康","娱乐","无标签"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +26,7 @@ public class SearchActivity extends AppCompatActivity{
         mSearchView = (SearchView) findViewById(R.id.search);
 
 
-       /* Toolbar toolbar = (Toolbar) findViewById(R.id.search_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.search_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -33,14 +35,13 @@ public class SearchActivity extends AppCompatActivity{
                 onBackPressed();
             }
         });
-*/
+
 //开始创建多个button
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.Relative);
         for(int i=0;i<=12;i++){
             Btn[i] = new Button(this);
             Btn[i].setId(i);
-            Btn[i].setText("按钮"+(i+1));
-            //Btn[i].setBackgroundDrawable(R.drawable.button_style);
+            Btn[i].setText(tagList[i]);
             Btn[i].setBackgroundColor(Color.GRAY);
             RelativeLayout.LayoutParams btParams = new RelativeLayout.LayoutParams(400,100);
             btParams.leftMargin = 10;
@@ -65,12 +66,16 @@ public class SearchActivity extends AppCompatActivity{
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {   // 搜索框的监听
 
             @Override
-            public boolean onQueryTextSubmit(String query) {                          //当点击搜索按钮时触发该方法，query时搜索框的内容
+            public boolean onQueryTextSubmit(String query) {                          //当点击搜索按钮时触发该方法，query是搜索框的内容
                 Toast.makeText(SearchActivity.this, query, Toast.LENGTH_SHORT).show();
+
+                Intent intent=new Intent(SearchActivity.this,SearchResultActivity.class);     //进入搜索结果界面
+                startActivity(intent);
+
+
                 return false;
             }
 
-            // 当搜索内容改变时触发该方法
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
@@ -80,6 +85,9 @@ public class SearchActivity extends AppCompatActivity{
 
     }
     private void changeColor(int i){                            //第i个按钮的监听事件
-        Btn[i].setBackgroundColor(Color.BLUE);
+        for(int j=0;j<=12;j++){
+            Btn[j].setBackgroundColor(Color.GRAY);
+        }
+        Btn[i].setBackgroundColor(Color.GREEN);
     }
 }
