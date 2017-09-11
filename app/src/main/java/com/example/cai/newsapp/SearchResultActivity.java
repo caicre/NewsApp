@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import com.example.cai.newsapp.NewsApi.*;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,13 @@ public class SearchResultActivity extends AppCompatActivity implements NewsActiv
     final String loading_Load_More="加载中...";
     String nowNormalText = "";
     boolean isLoading = false;  //是否正在加载
+    RelativeLayout id_rl_loading;
+    TextView id_pull_to_refresh_loadmore_text;
+    ProgressBar id_pull_to_refresh_load_progress;
+    private int picNum;
+    private static final int newsNumPer = 10;
+    private int pageNum;
+    private int category;
 
     private ListView mListView;
 
@@ -98,7 +106,8 @@ public class SearchResultActivity extends AppCompatActivity implements NewsActiv
 
 
 
-        /*            这一段取消注释即可获得上拉刷新效果，MainActivity中initSwipeLayout()相关全部去除
+
+
         View listview_footer_view = LayoutInflater.from(this).inflate(R.layout.listview_footer, null);
         mListView.addFooterView(listview_footer_view,null,false);
         id_rl_loading= (RelativeLayout) listview_footer_view.findViewById(R.id.id_rl_loading);
@@ -122,7 +131,7 @@ public class SearchResultActivity extends AppCompatActivity implements NewsActiv
 
             }
 
-        });*/
+        });
 
     }
 
@@ -200,5 +209,35 @@ public class SearchResultActivity extends AppCompatActivity implements NewsActiv
                 onBackPressed();
             }
         });
+    }
+
+    private void loadMore(){
+        id_rl_loading.setVisibility(View.VISIBLE);
+        id_pull_to_refresh_loadmore_text.setText(loading_Load_More);
+        id_pull_to_refresh_load_progress.setVisibility(View.VISIBLE);
+        isLoading = true;
+        picNum += newsNumPer;
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+
+
+            public void run() {
+                loadData();
+            }
+        }, 3 * 1000);
+
+    }
+    private void loadData(){
+
+
+        NewsThread runnable = new NewsThread(console, NewsSearchType.Latest, pageNum++, newsNumPer, category);
+        Thread thread = new Thread(runnable);
+        thread.start();
+
+        mPosition = -1;
+        isLoading = false;
+        id_pull_to_refresh_loadmore_text.setText(click_Load_More);
+        id_pull_to_refresh_load_progress.setVisibility(View.GONE);
     }
 }
