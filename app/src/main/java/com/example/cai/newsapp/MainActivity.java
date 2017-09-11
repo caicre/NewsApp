@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
     private int picNum;
 
     private Console console;
+    private DataConsole dConsole;
     private ArrayList<News> newsList;
 
     ListViewAdapter adapt;
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
         adapt = new ListViewAdapter(newsList);
         adapt.setActivity(this);
         console = new Console(this);
+        dConsole = new DataConsole(getApplicationContext());
         pageNum = 1;
         picNum = 1;
         category = NewsThread.science;
@@ -312,6 +314,9 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
             Intent intent=new Intent(MainActivity.this, SearchActivity.class);
             startActivity(intent);
             return true;
+        }else if(itemThatWasClickedId == R.id.action_history){
+            ArrayList<News> list = dConsole.getNewsHistory();
+            Toast.makeText(MainActivity.this,"浏览历史：个数为"+list.size(),Toast.LENGTH_LONG).show();
         }
         return super.onOptionsItemSelected(item);
     }
