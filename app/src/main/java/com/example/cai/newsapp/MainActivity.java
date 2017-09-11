@@ -52,10 +52,8 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
 
     final String click_Load_More="加载中...";
     final String loading_Load_More="加载中...";
-    final String comp_Load_More="没有更多";
     String nowNormalText = "";
     boolean isLoading = false;  //是否正在加载
-    boolean isComp = false;     //是否加载完成
 
     int mPosition=-1;
 
@@ -113,14 +111,14 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
         });
 
 
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){         //设置长按事件
+        /*mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){         //设置长按事件
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
                 String dec = String.format("长按了第%d个新闻",position+1);
                 Toast.makeText(MainActivity.this,dec,Toast.LENGTH_LONG).show();
                 return true;
             }
-        });
+        });*/
 
 //设置点击加载更多↓
         View listview_footer_view = LayoutInflater.from(this).inflate(R.layout.listview_footer, null);
@@ -310,7 +308,9 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClickedId = item.getItemId();
         if (itemThatWasClickedId == R.id.search) {
-            Toast.makeText(MainActivity.this,"进入搜索界面",Toast.LENGTH_LONG).show();               //菜单监听，进入搜索
+            //Toast.makeText(MainActivity.this,"进入搜索界面",Toast.LENGTH_LONG).show();               //菜单监听，进入搜索
+            Intent intent=new Intent(MainActivity.this, SearchActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);

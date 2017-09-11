@@ -6,6 +6,17 @@
     android:layout_margin="15dp"
     android:orientation="vertical">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_height="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:id="@+id/search_toolbar">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:textSize="20sp"/>
+    </android.support.v7.widget.Toolbar>
+
     <SearchView
         android:id="@+id/search"
         android:layout_width="match_parent"
