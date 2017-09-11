@@ -46,7 +46,7 @@ public class SearchResultActivity extends AppCompatActivity implements NewsActiv
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         newsList = new ArrayList<News>();
-        
+
         setContentView(R.layout.search_result);
         setToolbar();
         mListView = (ListView) findViewById(R.id.mlistLayout);
