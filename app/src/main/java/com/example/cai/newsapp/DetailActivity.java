@@ -53,6 +53,8 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
 
     @Override
     public void refresh() {
+        //添加浏览历史
+        dConsole.addNewsDetail(newsDetail);
 
         String[] url = newsDetail.getPictures();
 
