@@ -12,12 +12,15 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.cai.newsapp.NewsApi.NewsSearchType;
+
 import static android.R.id.list;
 
 public class SearchActivity extends AppCompatActivity{
     private SearchView mSearchView;
     Button Btn[] = new Button[13];
     static String[] tagList = {"科技","教育","军事","国内","社会","文化","汽车","国际","体育","财经","健康","娱乐","无标签"};
+    private int nowBtn = 12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class SearchActivity extends AppCompatActivity{
 
             layout.addView(Btn[i],btParams);
         }
+        Btn[12].setBackgroundColor(Color.GREEN);
 
         for(int k=0;k<Btn.length;k++){
             Btn[k].setTag(k);
@@ -67,11 +71,13 @@ public class SearchActivity extends AppCompatActivity{
 
             @Override
             public boolean onQueryTextSubmit(String query) {                          //当点击搜索按钮时触发该方法，query是搜索框的内容
-                Toast.makeText(SearchActivity.this, query, Toast.LENGTH_SHORT).show();
+                Toast.makeText(com.example.cai.newsapp.SearchActivity.this, query, Toast.LENGTH_SHORT).show();
 
-                Intent intent=new Intent(SearchActivity.this,SearchResultActivity.class);     //进入搜索结果界面
+                Intent intent=new Intent(com.example.cai.newsapp.SearchActivity.this, SearchResultActivity.class);     //进入搜索结果界面
+                intent.putExtra("keyword", query);
+                intent.putExtra("nst", NewsSearchType.Keyword.toString());
+                intent.putExtra("category", nowBtn);
                 startActivity(intent);
-
 
                 return false;
             }
@@ -84,10 +90,10 @@ public class SearchActivity extends AppCompatActivity{
 
 
     }
-    private void changeColor(int i){                            //第i个按钮的监听事件
-        for(int j=0;j<=12;j++){
-            Btn[j].setBackgroundColor(Color.GRAY);
-        }
+    private void changeColor(int i){
+        //第i个按钮的监听事件
+        Btn[nowBtn].setBackgroundColor(Color.GRAY);
         Btn[i].setBackgroundColor(Color.GREEN);
+        nowBtn = i;
     }
 }
