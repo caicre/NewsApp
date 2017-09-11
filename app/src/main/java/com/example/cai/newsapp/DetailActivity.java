@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.media.MediaPlayer;
 
 import com.bumptech.glide.Glide;
 
@@ -46,6 +47,10 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
     private Console console;
     private NewsDetail newsDetail;
     private DataConsole dConsole;
+    private MediaPlayer player = new MediaPlayer();
+    private String[] newsDetailSegment;
+    private int nowSegment;
+    private int segmentNum;
 
     public void setNewsDetail(NewsDetail newsDetail){
         this.newsDetail = newsDetail;
@@ -81,11 +86,50 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
         newsTitle.setText(newsDetail.getTitle());
         newsContent.setText(newsDetail.getContent());
 
+        int start = 0;
+        int segmentLength = 100;
+        int end = segmentLength;
+        String str = newsDetail.getContent();
+        newsDetailSegment = new String[str.length()/segmentLength+1];
+        segmentNum = 0;
+        while(end < str.length()){
+            newsDetailSegment[segmentNum++] = str.substring(start, end);
+            start = end;
+            end += segmentLength;
+        }
+        newsDetailSegment[segmentNum++] = str.substring(start);
+        nowSegment = 0;
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                           @Override
+                                           public void onCompletion(MediaPlayer mp) {
+                                               playNextSegment();
+                                           }
+                                       }
+        );
+
+        playNextSegment();
+        
         newsContent.invalidate();
         image.invalidate();
         newsTitle.invalidate();
     }
 
+    protected void playNextSegment(){
+        if(nowSegment >= segmentNum)
+            return;
+        try {
+            player.reset();
+            player.setDataSource("http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=6&text="+
+                    newsDetailSegment[nowSegment++]);
+            player.prepare();
+            player.start();
+        }
+        catch (Exception e) {
+            Log.e("ERROR", e.toString());
+            player = null;
+        }
+    }
+    
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_detail);
