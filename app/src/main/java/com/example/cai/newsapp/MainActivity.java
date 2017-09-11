@@ -321,6 +321,12 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
             Toast.makeText(MainActivity.this,"浏览历史：个数为"+list.size(),Toast.LENGTH_LONG).show();
             Intent intent=new Intent(MainActivity.this, HistoryActivity.class);
             startActivity(intent);
+            return true;
+        }
+        if(itemThatWasClickedId == R.id.action_clear){
+            dConsole.clear();
+            Toast.makeText(MainActivity.this,"清空",Toast.LENGTH_LONG).show();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

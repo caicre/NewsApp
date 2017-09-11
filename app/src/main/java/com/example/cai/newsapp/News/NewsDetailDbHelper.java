@@ -37,7 +37,7 @@ public class NewsDetailDbHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db){
         //调用SQLiteDatabase中的execSQL（）执行建表语句。
         db.execSQL(CREATE_NEWS);
-        Toast.makeText(nContext, "class NewsDetailDbHelper: NewsDetailDb has been created", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(nContext, "class NewsDetailDbHelper: NewsDetailDb has been created", Toast.LENGTH_SHORT).show();
     }
 
     @Override
