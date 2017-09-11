@@ -19,8 +19,8 @@ import static android.R.id.list;
 public class SearchActivity extends AppCompatActivity{
     private SearchView mSearchView;
     Button Btn[] = new Button[13];
-    static String[] tagList = {"科技","教育","军事","国内","社会","文化","汽车","国际","体育","财经","健康","娱乐","无标签"};
-    private int nowBtn = 12;
+    static String[] tagList = {"无标签", "科技","教育","军事","国内","社会","文化","汽车","国际","体育","财经","健康","娱乐"};
+    private int nowBtn = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class SearchActivity extends AppCompatActivity{
 
             layout.addView(Btn[i],btParams);
         }
-        Btn[12].setBackgroundColor(Color.GREEN);
+        Btn[0].setBackgroundColor(Color.GREEN);
 
         for(int k=0;k<Btn.length;k++){
             Btn[k].setTag(k);
@@ -75,7 +75,6 @@ public class SearchActivity extends AppCompatActivity{
 
                 Intent intent=new Intent(com.example.cai.newsapp.SearchActivity.this, SearchResultActivity.class);     //进入搜索结果界面
                 intent.putExtra("keyword", query);
-                intent.putExtra("nst", NewsSearchType.Keyword.toString());
                 intent.putExtra("category", nowBtn);
                 startActivity(intent);
 

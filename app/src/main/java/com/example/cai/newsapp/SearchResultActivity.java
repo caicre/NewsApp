@@ -40,9 +40,9 @@ public class SearchResultActivity extends AppCompatActivity implements NewsActiv
     RelativeLayout id_rl_loading;
     TextView id_pull_to_refresh_loadmore_text;
     ProgressBar id_pull_to_refresh_load_progress;
-    private int picNum;
     private static final int newsNumPer = 10;
     private int pageNum;
+    private String keyword;
     private int category;
 
     private ListView mListView;
@@ -89,24 +89,22 @@ public class SearchResultActivity extends AppCompatActivity implements NewsActiv
             }
         });
 
+        pageNum = 1;
         Intent intent = getIntent();
         String str = intent.getStringExtra("nst");
         console = new Console(this);
+        keyword = intent.getStringExtra("keyword");
+        category = intent.getIntExtra("category", 0);
         NewsThread runnable = new NewsThread(
                 console,
-                NewsSearchType.valueOf(intent.getStringExtra("nst")),
-                intent.getStringExtra("keyword"),
-                0,
-                10,
-                intent.getIntExtra("category", 13)
+                NewsSearchType.Keyword,
+                keyword,
+                pageNum++,
+                newsNumPer,
+                category
         );
         Thread thread = new Thread(runnable);
         thread.start();
-
-
-
-
-
 
         View listview_footer_view = LayoutInflater.from(this).inflate(R.layout.listview_footer, null);
         mListView.addFooterView(listview_footer_view,null,false);
@@ -216,7 +214,6 @@ public class SearchResultActivity extends AppCompatActivity implements NewsActiv
         id_pull_to_refresh_loadmore_text.setText(loading_Load_More);
         id_pull_to_refresh_load_progress.setVisibility(View.VISIBLE);
         isLoading = true;
-        picNum += newsNumPer;
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -226,12 +223,17 @@ public class SearchResultActivity extends AppCompatActivity implements NewsActiv
                 loadData();
             }
         }, 3 * 1000);
-
     }
+
     private void loadData(){
-
-
-        NewsThread runnable = new NewsThread(console, NewsSearchType.Latest, pageNum++, newsNumPer, category);
+        NewsThread runnable = new NewsThread(
+                console,
+                NewsSearchType.Keyword,
+                keyword,
+                pageNum++,
+                newsNumPer,
+                category
+        );
         Thread thread = new Thread(runnable);
         thread.start();
 

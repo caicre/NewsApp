@@ -82,9 +82,10 @@ public class NewsThread implements Runnable {
                         append("keyword="+keyword);
 
                 if(pageNum != 0) {
-                    urlStr.append("pageNo="+String.valueOf(pageNum)).
-                            append("&pageSize="+String.valueOf(pageSize)).
-                            append("&category="+String.valueOf(category));
+                    urlStr.append("&pageNo="+String.valueOf(pageNum)).
+                            append("&pageSize="+String.valueOf(pageSize)+"&category=");
+                    if(category != 0)
+                        urlStr.append(String.valueOf(category));
                 }
                 break;
             case Id:

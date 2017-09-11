@@ -270,21 +270,10 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
 
     }
     private void loadData(){
-
-        //Log.i("XXX","loadData");
         NewsThread runnable = new NewsThread(console, NewsSearchType.Latest, pageNum++, newsNumPer, category);
-        //NewsThread runnable = new NewsThread(console, NewsSearchType.Picture, "http://img003.21cnimg.com/photos/album/20160808/m600/A3B78A702DF9BF0EE02ADFD5D4F53D54.jpeg");
         Thread thread = new Thread(runnable);
         thread.start();
 
-     /*   for(int i=0;i<15;i++){
-            News news = new News();
-            news.setTitle("More CardView"+i);
-            news.setImgId(R.drawable.ic_image_loadfail);
-            news.setIntro("More CardView "+i+" is here");
-            newsList.add(news);
-        }*/
-        //adapt.notifyDataSetChanged();
         mPosition = -1;
         isLoading = false;
         id_pull_to_refresh_loadmore_text.setText(click_Load_More);
@@ -292,15 +281,6 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
     }
 
     //点击搜索按钮，启动SearchResultActivity，在该activity中访问网络
-    public void changeToSearchActivity(NewsSearchType nst, String keyword, int pageNum, int pageSize, int category) {
-        Intent intent = new Intent(this, SearchResultActivity.class);
-        intent.putExtra("nst", nst.toString());
-        intent.putExtra("keyword", keyword);
-        intent.putExtra("pageNum", pageNum);
-        intent.putExtra("pageSize", pageSize);
-        intent.putExtra("category", category);
-        startActivity(intent);
-    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
