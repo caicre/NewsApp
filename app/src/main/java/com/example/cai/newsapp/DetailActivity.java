@@ -59,8 +59,6 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
 
     @Override
     public void refresh() {
-        //添加浏览历史
-        dConsole.addNewsDetail(newsDetail);
 
         String[] url = newsDetail.getPictures();
 
@@ -68,19 +66,13 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
             image.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.news_pic));
         }
         else {
-            Glide.with(this).load(url[0]).placeholder(R.drawable.ic_image_loading).into(image);
-
-            ViewGroup group = (ViewGroup) findViewById(R.id.viewGroup);
-            final ImageView[] imageViews = new ImageView[url.length];
-            for (int i = 1; i < imageViews.length; i++) {
-                ImageView imageView = new ImageView(this);
-                imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                imageView.setPadding(50, 0, 50, 0);
-                imageViews[i] = imageView;
-                //imageView.setImageResource(R.drawable.ic_launcher);
-                Glide.with(this).load(url[i]).placeholder(R.drawable.ic_image_loading).into(new GlideDrawableImageViewTargetForSave(imageView, url[i]));
-                group.addView(imageView);
-                group.invalidate();
+            if(dConsole.contain(newsDetail)) {
+                Log.d("localRefresh", "start");
+                localRefresh(url);
+            }
+            else {
+                Log.d("onlineRefresh", "start");
+                onlineRefresh(url);
             }
         }
 
@@ -113,8 +105,41 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
         newsContent.invalidate();
         image.invalidate();
         newsTitle.invalidate();
-    }
 
+        //最后把新闻存到数据库里
+        dConsole.addNewsDetail(newsDetail);
+    }
+    private void localRefresh(String[] url){
+        image.setImageBitmap(dConsole.loadPicture(getApplicationContext(), url[0]));
+        ViewGroup group = (ViewGroup) findViewById(R.id.viewGroup);
+        final ImageView[] imageViews = new ImageView[url.length];
+        for (int i = 1; i < imageViews.length; i++) {
+            ImageView imageView = new ImageView(this);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            imageView.setPadding(50, 0, 50, 0);
+            imageViews[i] = imageView;
+            //imageView.setImageResource(R.drawable.ic_launcher);
+            imageView.setImageBitmap(dConsole.loadPicture(getApplicationContext(),url[i]));
+            group.addView(imageView);
+            group.invalidate();
+        }
+    }
+    private void onlineRefresh(String[] url){
+        Glide.with(this).load(url[0]).placeholder(R.drawable.ic_image_loading).into(new GlideDrawableImageViewTargetForSave(image, url[0]));
+
+        ViewGroup group = (ViewGroup) findViewById(R.id.viewGroup);
+        final ImageView[] imageViews = new ImageView[url.length];
+        for (int i = 1; i < imageViews.length; i++) {
+            ImageView imageView = new ImageView(this);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            imageView.setPadding(50, 0, 50, 0);
+            imageViews[i] = imageView;
+            //imageView.setImageResource(R.drawable.ic_launcher);
+            Glide.with(this).load(url[i]).placeholder(R.drawable.ic_image_loading).into(new GlideDrawableImageViewTargetForSave(imageView, url[i]));
+            group.addView(imageView);
+            group.invalidate();
+        }
+    }
     protected void playNextSegment(){
         if(nowSegment >= segmentNum)
             return;
