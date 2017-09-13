@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +17,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cai.newsapp.Console.Console;
 import com.example.cai.newsapp.News.DataConsole;
 import com.example.cai.newsapp.News.News;
 
 import java.util.ArrayList;
 
-public class HistoryActivity extends AppCompatActivity implements NewsActivity {
+public class CollectionActivity extends AppCompatActivity implements NewsActivity{
     private ListView mListView;
     private DataConsole dConsole;
 
@@ -39,28 +38,28 @@ public class HistoryActivity extends AppCompatActivity implements NewsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.history);
+        setContentView(R.layout.collection);
         setToolbar();
 
         dConsole = new DataConsole(getApplicationContext());
-        newsList = dConsole.getNewsHistory(getApplicationContext());
+        newsList = dConsole.getNewsCollection(getApplicationContext());
         adapt = new ListViewAdapter(newsList);
         adapt.setActivity(this);
 
-        mListView = (ListView) findViewById(R.id.history_list);
+        mListView = (ListView) findViewById(R.id.collection_list);
         mListView.setAdapter(adapt);                                 //设置接收器
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {            //设置点击事件
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //position是点击了第position个item
-                Intent intent=new Intent(HistoryActivity.this, DetailActivity.class);
+                Intent intent=new Intent(CollectionActivity.this, DetailActivity.class);
                 intent.putExtra("ID", newsList.get(position).getId());
                 startActivity(intent);
 
                 //mPosition = position;??
                 adapt.notifyDataSetChanged();
-                Toast.makeText(HistoryActivity.this,"进入详情"+position,Toast.LENGTH_LONG).show();
+                Toast.makeText(CollectionActivity.this,"进入详情"+position,Toast.LENGTH_LONG).show();
             }
         });
 
@@ -85,9 +84,9 @@ public class HistoryActivity extends AppCompatActivity implements NewsActivity {
 
     public class ListViewAdapter extends BaseAdapter {
         ArrayList<News> newsList;
-        private HistoryActivity activity;
+        private CollectionActivity activity;
 
-        public void setActivity(HistoryActivity activity) {
+        public void setActivity(CollectionActivity activity) {
             this.activity = activity;
         }
 
@@ -109,7 +108,7 @@ public class HistoryActivity extends AppCompatActivity implements NewsActivity {
 
         public View getView(int position, View convertView, ViewGroup parent){
             ViewHolder holder = null;
-            LayoutInflater inflater = (LayoutInflater)HistoryActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater)CollectionActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if(convertView == null){
                 convertView = inflater.inflate(R.layout.item_news, null);
                 holder = new ViewHolder();
@@ -120,11 +119,11 @@ public class HistoryActivity extends AppCompatActivity implements NewsActivity {
                 convertView.setTag(holder);
             }
 
-            holder=(ViewHolder)convertView.getTag();
+            holder=(CollectionActivity.ViewHolder)convertView.getTag();
             News news = newsList.get(position);                                   //将holder与目标内容关联
 
             //读取开始
-			holder.title.setText(news.getTitle());
+            holder.title.setText(news.getTitle());
             Bitmap bitmap = null;
             if(news.getThumb() == null)
                 bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.news_pic);
@@ -132,7 +131,7 @@ public class HistoryActivity extends AppCompatActivity implements NewsActivity {
                 bitmap = news.getThumb();
             holder.image.setImageBitmap(bitmap);
             holder.intro.setText(news.getIntro());
-			//读取结束
+            //读取结束
 
             //??????????????????
             holder.title.setEnabled(false);
@@ -141,15 +140,13 @@ public class HistoryActivity extends AppCompatActivity implements NewsActivity {
         }
     }
 
-
-
     private void loadMore(){
         //把新闻列表读取到newslist中
         adapt.notifyDataSetChanged();  //提醒条目更新
     }
 
     private void setToolbar(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.htoolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.ctoolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

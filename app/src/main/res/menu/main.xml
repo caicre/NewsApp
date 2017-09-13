@@ -4,9 +4,14 @@
 
     <item
         android:id="@+id/action_history"
-        android:orderInCategory="3"
+        android:orderInCategory="2"
         app:showAsAction="never"
         android:title="浏览历史"/>
+    <item
+        android:id="@+id/action_collection"
+        android:orderInCategory="3"
+        app:showAsAction="never"
+        android:title="收藏列表"/>
     <item
         android:id="@+id/action_clear"
         android:orderInCategory="4"

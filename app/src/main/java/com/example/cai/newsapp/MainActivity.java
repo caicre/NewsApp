@@ -302,6 +302,13 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
             startActivity(intent);
             return true;
         }
+        if(itemThatWasClickedId == R.id.action_collection){
+            ArrayList<News> list = dConsole.getNewsCollection(getApplicationContext());
+            Toast.makeText(MainActivity.this,"收藏列表：个数为"+list.size(),Toast.LENGTH_LONG).show();
+            Intent intent=new Intent(MainActivity.this, CollectionActivity.class);
+            startActivity(intent);
+            return true;
+        }
         if(itemThatWasClickedId == R.id.action_clear){
             dConsole.clear();
             Toast.makeText(MainActivity.this,"清空",Toast.LENGTH_LONG).show();

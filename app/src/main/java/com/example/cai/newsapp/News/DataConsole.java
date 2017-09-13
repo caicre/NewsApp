@@ -181,6 +181,13 @@ public class DataConsole {
         else
             dbConsole.addNews(n);
     }
+    public boolean isCollection(NewsDetail n) {
+        NewsDetailLiked oldN;
+        if((oldN = (NewsDetailLiked)dbConsole.findNews(n.getId()))!=null){
+            return oldN.getIsLiked();
+        }
+        return false;
+    }
     public void addCollection(NewsDetail n) {   //由于添加收藏是详情页面之后的，确保数据库中已存在NewDetail
         if(dbConsole.findNews(n.getId())==null)
             Log.d("DataConsole: addCollect", "there isn't the NewsDetail in Database");

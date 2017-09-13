@@ -219,8 +219,15 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClickedId = item.getItemId();
-        if (itemThatWasClickedId == R.id.action_collection) {
-            Toast.makeText(DetailActivity.this,"选择收藏",Toast.LENGTH_LONG).show();
+        if (itemThatWasClickedId == R.id.action_collection_add_delete) {
+            if(dConsole.isCollection(newsDetail)) {
+                dConsole.deleteCollection(newsDetail);
+                Toast.makeText(DetailActivity.this,"删除收藏",Toast.LENGTH_LONG).show();
+            }
+            else {
+                dConsole.addCollection(newsDetail);
+                Toast.makeText(DetailActivity.this,"添加收藏",Toast.LENGTH_LONG).show();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);

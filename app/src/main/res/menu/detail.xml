@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_collection"
+        android:id="@+id/action_collection_add_delete"
         android:orderInCategory="1"
         app:showAsAction="never"
         android:title="收藏/删除"/>
