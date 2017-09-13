@@ -9,12 +9,15 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.media.MediaPlayer;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -29,9 +32,12 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.example.cai.newsapp.Console.Console;
 import com.example.cai.newsapp.News.DataConsole;
+import com.example.cai.newsapp.News.News;
 import com.example.cai.newsapp.News.NewsDetail;
 import com.example.cai.newsapp.NewsApi.NewsSearchType;
 import com.example.cai.newsapp.NewsApi.NewsThread;
+
+import java.util.ArrayList;
 
 import static android.R.id.list;
 
@@ -203,5 +209,20 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
             Bitmap bitmap = ((GlideBitmapDrawable) drawable.getCurrent()).getBitmap();
             dConsole.savePicture(getApplicationContext(), bitmap, pictureUrl);
         }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemThatWasClickedId = item.getItemId();
+        if (itemThatWasClickedId == R.id.action_clear) {
+            Toast.makeText(DetailActivity.this,"选择收藏",Toast.LENGTH_LONG).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
