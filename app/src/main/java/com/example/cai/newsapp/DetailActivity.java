@@ -219,7 +219,7 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClickedId = item.getItemId();
-        if (itemThatWasClickedId == R.id.action_clear) {
+        if (itemThatWasClickedId == R.id.action_collection) {
             Toast.makeText(DetailActivity.this,"选择收藏",Toast.LENGTH_LONG).show();
             return true;
         }
