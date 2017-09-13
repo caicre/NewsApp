@@ -1,67 +1,78 @@
-package com.example.cai.newsapp.NewsApi;
+package com.example.cai.newsapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cai.newsapp.Console.Console;
 import com.example.cai.newsapp.News.DataConsole;
 import com.example.cai.newsapp.News.News;
-import com.example.cai.newsapp.NewsActivity;
-import com.example.cai.newsapp.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
-/**
- * Created by lenovo on 9/11/2017.
- */
 
 public class HistoryActivity extends AppCompatActivity implements NewsActivity {
     private ListView mListView;
-    private ArrayList<News> newsList;
-    private Console console;
     private DataConsole dConsole;
 
-    private static final int newsNumPer = 10;
-    private int pageNum;
-    private int category;
-    private int picNum;
+    private ArrayList<News> newsList;
 
     ListViewAdapter adapt;
 
+    @Override
+    public void refresh(){
+
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history);
-        setToolBar();
+        setToolbar();
 
-        newsList = new ArrayList<News>();
+        dConsole = new DataConsole(getApplicationContext());
+        newsList = dConsole.getNewsHistory();
         adapt = new ListViewAdapter(newsList);
         adapt.setActivity(this);
-        console = new Console(this);
-        dConsole = new DataConsole(getApplicationContext());
-        pageNum = 1;
-        picNum = 1;
-        category = NewsThread.science;
 
         mListView = (ListView) findViewById(R.id.history_list);
-        mListView.setAdapter(adapt);
+        mListView.setAdapter(adapt);                                 //设置接收器
 
-        loadMore();
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {            //设置点击事件
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //position是点击了第position个item
+                Intent intent=new Intent(HistoryActivity.this, DetailActivity.class);
+                intent.putExtra("ID", newsList.get(position).getId());
+                startActivity(intent);
 
+                //mPosition = position;??
+                adapt.notifyDataSetChanged();
+                Toast.makeText(HistoryActivity.this,"进入详情"+position,Toast.LENGTH_LONG).show();
+            }
+        });
+
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){         //设置长按事件,不需要内容
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
+
+                return true;
+            }
+        });
+
+        loadMore();             //向newsList添加新闻条目
     }
 
 
@@ -111,7 +122,9 @@ public class HistoryActivity extends AppCompatActivity implements NewsActivity {
 
             holder=(ViewHolder)convertView.getTag();
             News news = newsList.get(position);                                   //将holder与目标内容关联
-            holder.title.setText(news.getTitle());
+
+            //读取开始
+			holder.title.setText(news.getTitle());
             Bitmap bitmap = null;
             if(news.getThumb() == null)
                 bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.news_pic);
@@ -119,13 +132,27 @@ public class HistoryActivity extends AppCompatActivity implements NewsActivity {
                 bitmap = news.getThumb();
             holder.image.setImageBitmap(bitmap);
             holder.intro.setText(news.getIntro());
+			//读取结束
+
+            //??????????????????
             holder.title.setEnabled(false);
 
             return convertView;
         }
     }
 
-    private void setToolBar(){
+
+
+    private void loadMore(){
+        //把新闻列表读取到newslist中
+        adapt.notifyDataSetChanged();  //提醒条目更新
+    }
+
+
+
+
+
+    private void setToolbar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.htoolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -136,41 +163,4 @@ public class HistoryActivity extends AppCompatActivity implements NewsActivity {
             }
         });
     }
-
-    private void loadMore(){
-        picNum += newsNumPer;
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-
-            public void run() {
-                loadData();
-                refresh();
-            }
-        }, 3 * 1000);
-    }
-    private void loadData(){
-
-        NewsThread runnable = new NewsThread(console, NewsSearchType.Latest, pageNum++, newsNumPer, category);
-        //NewsThread runnable = new NewsThread(console, NewsSearchType.Picture, "http://img003.21cnimg.com/photos/album/20160808/m600/A3B78A702DF9BF0EE02ADFD5D4F53D54.jpeg");
-        Thread thread = new Thread(runnable);
-        thread.start();
-    }
-
-    public String getNewsPicUrl(int index) {
-        return  newsList.get(index).getPictures()[0];
-    }
-
-    public void refresh(){
-        adapt.notifyDataSetChanged();
-    }
-
-    public void setNewsList(ArrayList<News> news){
-        newsList = news;
-    }
-
-    public void addNewsList(ArrayList<News> news) {
-        newsList.addAll(news);
-    }
-
 }
