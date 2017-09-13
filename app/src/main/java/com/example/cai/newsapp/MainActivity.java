@@ -1,6 +1,5 @@
 package com.example.cai.newsapp;
 
-import com.example.cai.newsapp.NewsApi.HistoryActivity;
 import com.example.cai.newsapp.NewsApi.NewsSearchType;
 import com.example.cai.newsapp.NewsApi.NewsThread;
 import com.example.cai.newsapp.News.*;
@@ -297,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
             return true;
         }
         if(itemThatWasClickedId == R.id.action_history){
-            ArrayList<News> list = dConsole.getNewsHistory();
+            ArrayList<News> list = dConsole.getNewsHistory(getApplicationContext());
             Toast.makeText(MainActivity.this,"浏览历史：个数为"+list.size(),Toast.LENGTH_LONG).show();
             Intent intent=new Intent(MainActivity.this, HistoryActivity.class);
             startActivity(intent);

@@ -43,7 +43,7 @@ public class HistoryActivity extends AppCompatActivity implements NewsActivity {
         setToolbar();
 
         dConsole = new DataConsole(getApplicationContext());
-        newsList = dConsole.getNewsHistory();
+        newsList = dConsole.getNewsHistory(getApplicationContext());
         adapt = new ListViewAdapter(newsList);
         adapt.setActivity(this);
 

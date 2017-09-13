@@ -144,16 +144,28 @@ public class DataConsole {
             //e.printStackTrace();
         }
     }
+    //从本地中下载第一个图片到thumbPic
+    public void getThumbImage(Context context, ArrayList<News> newsList){
+        for(News n : newsList){
+            if(n.getPictures() == null)
+                return;
+            if(n.getPictures().length > 0)
+                if(n.getPictures()[0]!="")
+                    n.setThumb(loadPicture(context, n.getPictures()[0]));
+        }
+    }
     //获取最近浏览新闻(返回类型是ArrayList<News>)
-    public ArrayList<News> getNewsHistory(){
+    public ArrayList<News> getNewsHistory(Context context){
         ArrayList<News> newsHistory = null;
         newsHistory = dbConsole.getNewsList(false);
+        getThumbImage(context, newsHistory);
         return newsHistory;
     }
     //获取所有收藏的NewsDetail(返回类型是ArrayList<News>)
-    public ArrayList<News> getNewsCollection(){
+    public ArrayList<News> getNewsCollection(Context context){
         ArrayList<News> newsCollection = null;
         newsCollection = dbConsole.getNewsList(true);
+        getThumbImage(context, newsCollection);
         return newsCollection;
     }
     public void addNewsDetail(NewsDetail n) {
