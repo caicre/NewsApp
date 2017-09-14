@@ -74,8 +74,7 @@ public class NewsThread implements Runnable {
             case Latest:
                 urlStr.append("latest?").
                         append("pageNo="+String.valueOf(pageNum)).
-                        append("&pageSize="+String.valueOf(pageSize)).
-                        append("&category="+String.valueOf(category));
+                        append("&pageSize="+String.valueOf(pageSize));
                 break;
             case Keyword:
                 urlStr.append("search?").

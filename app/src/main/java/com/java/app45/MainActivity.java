@@ -36,12 +36,11 @@ import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.auth.AuthInfo;
 
 public class MainActivity extends AppCompatActivity implements NewsActivity {
-    private static final int newsNumPer = 10;
+    private static final int newsNumPer = 40;
     private int pageNum;
     private int category;
     private ListView mListView;
     private SwipeRefreshLayout mSwipe;
-    private int picNum;
 
     private Console console;
     private DataConsole dConsole;
@@ -89,8 +88,7 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
         console = new Console(this);
         dConsole = new DataConsole(getApplicationContext());
         pageNum = 1;
-        picNum = 1;
-        category = NewsThread.science;
+        category = 0;
 
         mListView = (ListView) findViewById(R.id.listLayout);
         mListView.setAdapter(adapt);                                 //设置接收器
@@ -259,7 +257,6 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
         id_pull_to_refresh_loadmore_text.setText(loading_Load_More);
         id_pull_to_refresh_load_progress.setVisibility(View.VISIBLE);
         isLoading = true;
-        picNum += newsNumPer;
 
         new Handler().postDelayed(new Runnable() {
             @Override

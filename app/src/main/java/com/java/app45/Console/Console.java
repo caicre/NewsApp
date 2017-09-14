@@ -3,6 +3,7 @@ package com.java.app45.Console;
 import com.java.app45.DetailActivity;
 import com.java.app45.News.DataConsole;
 import com.java.app45.NewsActivity;
+import com.java.app45.NewsApplication;
 import com.java.app45.SearchResultActivity;
 
 import android.os.Handler;
@@ -46,6 +47,8 @@ public class Console {
         if(activity instanceof MainActivity) {
             MainActivity act = (MainActivity) activity;
             ArrayList<News> newNewsList = DataConsole.toNewsArr(str);
+            NewsApplication app = (NewsApplication)act.getApplication();
+            newNewsList = app.filter.getNews(newNewsList);
             for(News news: newNewsList) {
                 try {
                     //图片的大小临时取200，200

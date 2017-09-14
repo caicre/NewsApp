@@ -103,7 +103,10 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
         );
 
         playNextSegment();
-        
+
+        NewsApplication app = (NewsApplication)getApplication();
+        app.filter.weightPlus(newsDetail.getClassTag());
+
         newsContent.invalidate();
         image.invalidate();
         newsTitle.invalidate();
@@ -163,6 +166,11 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
             Log.e("ERROR", e.toString());
             player = null;
         }
+    }
+
+    public void onBackPressed(){
+        super.onBackPressed();
+        player.release();
     }
 
     protected void onCreate(Bundle savedInstanceState){

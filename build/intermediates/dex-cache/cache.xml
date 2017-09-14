@@ -3,21 +3,21 @@
 
     <item
         is-multidex="true"
-        jar="F:\work\github\Debug_finish\NewsApp\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jar="D:\Java\project\NewsApp-20170913\NewsApp-20170913\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="e951bc2851f4a50eff184b5d28c753e9936a18eb">
+        <dex dex="D:\Java\project\NewsApp-20170913\NewsApp-20170913\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_74633d57d916e85ca7eb28e10809d579968e7e08\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Java\project\NewsApp-20170913\NewsApp-20170913\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.1"
         sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
-        <dex dex="F:\work\github\Debug_finish\NewsApp\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_97378115d8bc47bd7c63dd51c35a1faa442f6db1\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="F:\work\github\Debug_finish\NewsApp\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.1"
-        sha1="d5c68e967c37475917681da12da353665c5678f7">
-        <dex dex="F:\work\github\Debug_finish\NewsApp\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_9ac7bccf955bc336ac2bea5fce3e96aaf5fa7312\classes.dex" />
+        <dex dex="D:\Java\project\NewsApp-20170913\NewsApp-20170913\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_e7ce7c9783178c004c443212611c9ed30449e887\classes.dex" />
     </item>
 
 </items>
