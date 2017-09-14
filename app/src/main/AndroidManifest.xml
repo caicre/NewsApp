@@ -3,6 +3,10 @@
     package="com.java.app45">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -11,19 +15,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.java.app45.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.java.app45.DetailActivity" />
-        <activity android:name="com.java.app45.SearchActivity" />
-        <activity android:name="com.java.app45.TextDetailActivity" />
-        <activity android:name="com.java.app45.SearchResultActivity" />
-        <activity android:name="com.java.app45.HistoryActivity" />
-        <activity android:name="com.java.app45.CollectionActivity"></activity>
+        <activity android:name=".DetailActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".TextDetailActivity" />
+        <activity android:name=".SearchResultActivity" />
+        <activity android:name=".HistoryActivity" />
+        <activity android:name=".CollectionActivity" />
+        <activity android:name=".weibo.WBAuthActivity" />
+        <activity android:name=".weibo.WeiboShareActivity"></activity>
     </application>
 
 </manifest>
