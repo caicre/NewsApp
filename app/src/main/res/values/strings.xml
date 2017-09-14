@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NewsApp</string>
+    <string name="app_name">45_吴宇涵</string>
     <drawable name="color1">#339966</drawable>
     <drawable name="color2">#47C283</drawable>
     <string name="title_activity_detail1">DetailActivity1</string>
