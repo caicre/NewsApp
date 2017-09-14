@@ -31,6 +31,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.java.app45.News.News;
+import com.java.app45.weibo.Constants;
+import com.sina.weibo.sdk.WbSdk;
+import com.sina.weibo.sdk.auth.AuthInfo;
 
 public class MainActivity extends AppCompatActivity implements NewsActivity {
     private static final int newsNumPer = 10;
@@ -145,6 +148,9 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
 //点击加载更多设置完成↑
         loadMore();
         initSwipeLayout();
+
+        //设置微博sdk
+        WbSdk.install(this,new AuthInfo(this, Constants.APP_KEY, Constants.REDIRECT_URL, Constants.SCOPE));
     }
 
     private void initSwipeLayout(){

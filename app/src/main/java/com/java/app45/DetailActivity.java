@@ -29,6 +29,10 @@ import com.java.app45.News.DataConsole;
 import com.java.app45.News.NewsDetail;
 import com.java.app45.NewsApi.NewsSearchType;
 import com.java.app45.NewsApi.NewsThread;
+import com.java.app45.weibo.WBAuthActivity;
+import com.java.app45.weibo.WeiboShareActivity;
+import com.sina.weibo.sdk.share.WbShareHandler;
+
 
 /**
  * Created by lenovo on 9/9/2017.
@@ -47,6 +51,9 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
     private String[] newsDetailSegment;
     private int nowSegment;
     private int segmentNum;
+
+    //微博分享Handler
+    private WbShareHandler shareHandler;
 
     public void setNewsDetail(NewsDetail newsDetail){
         this.newsDetail = newsDetail;
@@ -103,6 +110,12 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
 
         //最后把新闻存到数据库里
         dConsole.addNewsDetail(newsDetail);
+
+        //初始化微博分享Handler
+        Log.d("shareHandler: ","start");
+        shareHandler = new WbShareHandler(DetailActivity.this);
+        shareHandler.registerApp();
+        Log.d("shareHandler: ","end");
     }
     private void localRefresh(String[] url){
         image.setImageBitmap(dConsole.loadPicture(getApplicationContext(), url[0]));
@@ -150,9 +163,10 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
             player = null;
         }
     }
-    
+
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.news_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         newsContent = (TextView) findViewById(R.id.NewsContent);
@@ -217,6 +231,19 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
                 dConsole.addCollection(newsDetail);
                 Toast.makeText(DetailActivity.this,"添加收藏",Toast.LENGTH_LONG).show();
             }
+            return true;
+        }
+        if (itemThatWasClickedId == R.id.action_share) {
+            Intent i = new Intent(DetailActivity.this, WeiboShareActivity.class);
+            i.putExtra(WeiboShareActivity.KEY_SHARE_TYPE, WeiboShareActivity.SHARE_CLIENT);
+            i.putExtra("nid", newsDetail.getId());
+            startActivity(i);
+            Toast.makeText(DetailActivity.this,"微博分享",Toast.LENGTH_LONG).show();
+            return true;
+        }
+        if (itemThatWasClickedId == R.id.action_get_access) {
+            startActivity(new Intent(DetailActivity.this, WBAuthActivity.class));
+            Toast.makeText(DetailActivity.this,"微博授权",Toast.LENGTH_LONG).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
