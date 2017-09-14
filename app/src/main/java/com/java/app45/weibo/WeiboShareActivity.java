@@ -110,7 +110,7 @@ public class WeiboShareActivity extends Activity implements WbShareCallback {
      */
     private TextObject getTextObj() {
         TextObject textObject = new TextObject();
-        textObject.text = newsDetail.getTitle()+"\n\n"+newsDetail.getContent();
+        textObject.text = newsDetail.getTitle()+"\n\n"+newsDetail.getIntro()+"\n\n"+newsDetail.getUrl();
         textObject.title = newsDetail.getTitle();
         //textObject.actionUrl = "http://www.baidu.com";
         return textObject;

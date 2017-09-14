@@ -101,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements NewsActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent=new Intent(MainActivity.this, DetailActivity.class);
                 intent.putExtra("ID", newsList.get(position).getId());
+                intent.putExtra("intro", newsList.get(position).getIntro());
+
                 startActivity(intent);
 
                 mPosition = position;

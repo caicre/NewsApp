@@ -40,5 +40,6 @@ public class News {
     public String getUrl(){ return url; }
     public String getSource(){ return source; }
     public Bitmap getThumb(){ return thumbData; }
+    public void setIntro(String intro) { this.intro= intro; }
     public void setThumb(Bitmap bitmap) { this.thumbData = bitmap; }
 }

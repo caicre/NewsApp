@@ -51,7 +51,7 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
     private String[] newsDetailSegment;
     private int nowSegment;
     private int segmentNum;
-
+    private String intro;
     //微博分享Handler
     private WbShareHandler shareHandler;
 
@@ -109,6 +109,7 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
         newsTitle.invalidate();
 
         //最后把新闻存到数据库里
+        newsDetail.setIntro(intro);
         dConsole.addNewsDetail(newsDetail);
 
         //初始化微博分享Handler
@@ -193,7 +194,7 @@ public class DetailActivity extends AppCompatActivity implements NewsActivity{
 
         newsTitle.setText("新闻标题");
         newsContent.setText("新闻内容");
-
+        intro = intent.getStringExtra("intro");
         thread.start();
     }
 
