@@ -18,11 +18,6 @@
         app:showAsAction="never"
         android:title="清空"/>
     <item
-        android:id="@+id/action_change_skin"
-        android:orderInCategory="5"
-        app:showAsAction="never"
-        android:title="更换昼夜模式" />
-    <item
         android:id="@+id/search"
         android:orderInCategory="1"
         app:showAsAction="ifRoom"
